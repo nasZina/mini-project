@@ -68,10 +68,9 @@ def customer_form():
             'customer_phone' : customer_phone}
     
 def new_order(customer_details):
-    with open('data/orders.csv', mode='a+') as file:
+    with open('data/orders.csv', mode='a') as file:
         fieldnames = ['customer_name', 'customer_address', 'customer_phone', 'courier', 'status']
         writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
         writer.writerow(customer_details)
         
         
