@@ -1,11 +1,14 @@
 import csv
 from pprint import pp
 
-import src.file_handlers.txt_io , src.file_handlers.csv_io
+import src.file_handlers.txt_io , src.file_handlers.csv_io as csv_io
 
 # Global variables #########################################################
 welcome_screen = """
-WELCOME TO OUR CAFE!
+                                /--------------------------\   
+                                |   WELCOME TO OUR CAFE!   |
+                                |__________________________|
+                                   
 Please Select An Option Below:
 0. Exit App
 1. Go To The Product Menu
@@ -13,7 +16,10 @@ Please Select An Option Below:
 """
 
 product_menu = """
-WELCOME TO THE PRODUCTS MENU!
+                                /--------------------------\   
+                                |       PRODUCTS MENU!     |
+                                |__________________________|
+
 Please select an option from our product menu below:
 0. Return To Main Menu
 1. View Available Products
@@ -42,6 +48,7 @@ couriers = src.file_handlers.txt_io.read_data_txt_file('data/couriers.txt')
 products = src.file_handlers.txt_io.read_data_txt_file('data/products.txt')
 orders = src.file_handlers.csv_io.read_data_csv_file('data/orders.csv')
 
+
 # FUNCTIONS ####################################################################### 
 # PRODUCT MENU
     # print enumerated list function                     # 
@@ -67,11 +74,7 @@ def customer_form():
             'customer_address' : customer_address , 
             'customer_phone' : customer_phone}
     
-def new_order(customer_details):
-    with open('data/orders.csv', mode='a') as file:
-        fieldnames = ['customer_name', 'customer_address', 'customer_phone', 'courier', 'status']
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writerow(customer_details)
+
         
         
     
@@ -134,23 +137,22 @@ from above list:
                         order['courier'] = user_input_courier
                         order['status'] = 'Preparing'
                         
-                        new_order(order)
+                        csv_io.new_order(order)
                         
                         src.file_handlers.txt_io.print_list(orders)
-                        # print(new_order(order))
-                        # src.file_handlers.csv_io.csv_writing_from_dict('data/orders.csv' , order)
                     
-                        # src.file_handlers.csv_io.write_row_csv_file(orders, 'data/orders.csv')
-                        # new_order(orders)
-                        # print(new_order(orders))
-                        
-                        # print(new_order(order))
-                            
                     elif user_level_2_input == 3:
                         print('here are the current orders:'.capitalize())
-                        src.file_handlers.csv_io.print_dict(orders)
+                        # src.file_handlers.csv_io.print_dict(orders)
+                        # TO DO update existing orders status(print + 
+                        # get input + print + get input + update)
+                        src.file_handlers.csv_io.order_update(orders,'Please enter your order number from the list above:', 'Please type in the number corresponding to the current status of your order:')
+                       
                         
-                    
+                        
+                        
+                        
+                        
         if user_input == 2:
         # go to couriers menu level 1
             while True:

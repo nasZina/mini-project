@@ -13,7 +13,7 @@ def save_data_txt_file(data, file_name):
 
 def print_list(lst):
     for index,line in enumerate(lst):
-        print(index + 1,line)
+        print(index ,line)
             
 def create_product(products):
     new_product = input("What would you like?: ")

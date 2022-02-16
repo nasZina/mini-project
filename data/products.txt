@@ -25,3 +25,4 @@ Patisserie
 Ginger bread
 tea
 Bread sticks
+Mint Chocolate

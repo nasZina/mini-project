@@ -9,13 +9,22 @@ def read_data_csv_file(file_name):
             data.append(row)
     return data    
         
-    
-            
 def csv_writing_from_dict(filename, data):
     with open(filename, mode='w') as file:
         writer = csv.DictWriter(file, fieldnames=data[0].keys())
         writer.writeheader()
-        writer.writerow(data)
+        writer.writerows(data)    
+
+def new_order(customer_details):
+    with open('data/orders.csv', mode='a') as file:
+        fieldnames = ['customer_name', 'customer_address', 'customer_phone', 'courier', 'status']
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writerow(customer_details)
+
+
+
+
+
         
 def write_row_csv_file(file_name, data):
     with open(file_name, mode = 'w') as file:
@@ -24,4 +33,30 @@ def write_row_csv_file(file_name, data):
 
 def print_dict(dict):
     for index,line in enumerate(dict):
-        print(index + 1,line)
+        print(index,line)
+        
+
+
+def order_update(lst, str, str2):
+    
+    print_dict(lst)
+    
+    user_order = int(input(str))
+
+    statuses = ['Preparing' , 'Dispatched' , 'Out-For-Delivery']
+    
+    for index,line in enumerate(statuses):
+        print(index, line)
+    
+    user_choice_update = int(input(str2))
+    
+    lst[user_order]["status"] = statuses[user_choice_update]
+    
+    print(lst[user_order])
+    
+    csv_writing_from_dict('orders.csv', lst)
+    
+    
+    
+    
+
