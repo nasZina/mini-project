@@ -21,9 +21,13 @@ def create_product(products):
     save_data_txt_file(products, 'data/products.txt')
     return products
 
-# def write_data_txt_file(file_name):
-    # data = []
-    # with open(file_name, 'a') as file:
-        # user_input = input('Which couriers would you like to add?: ')
-        # file = file.write(user_input + '\n')
-    # return data          
+def create_courier(couriers):
+    new_courier = input("What courier would you like to add?: ")
+    couriers.append(new_courier)
+    src.file_handlers.txt_io.save_data_txt_file(couriers, 'data/couriers.txt')
+    return couriers
+
+
+
+
+
