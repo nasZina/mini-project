@@ -1,5 +1,6 @@
 import csv
 from pprint import pp
+import prettytable
 
 import src.file_handlers.txt_io as txt_io , src.file_handlers.csv_io as csv_io
 import src.db.db as db
@@ -13,7 +14,7 @@ welcome_screen = """
                                    
 please select an option below:
 0. exit app
-1. go to the product menu
+1. go to the products menu
 2. go to the couriers menu
 """
 
@@ -21,7 +22,7 @@ product_menu = """
                                 /--------------------------\   
                                 |       PRODUCTS MENU      |
                                 |__________________________|
-Please select an option from our product menu below:
+Please select an option from our products menu below:
 0. Return To Main Menu
 1. View Available Products
 2. Add Your Own Product Choice
@@ -44,7 +45,7 @@ orders_menu = """
 Please select an option from our orders menu below:
 0. Return To Main Menu
 1. View Current Orders
-2. Ceate A New Order
+2. Create A New Order
 3. Update An Order
 """
 
@@ -74,100 +75,105 @@ orders = csv_io.read_data_csv_file('data/orders.csv')
 
 ###############################################################################################################################
 
-def main():            
-    while True:
-        # PRINT main menu options // GET user input for main menu option 
-        print(welcome_screen.center(200, '#').upper())
-        user_input = int(input('Option:'))
-        if user_input == 0:
-            break
-        if user_input == 1:
-        # go to product menu level 1
-            while True:
-                print(product_menu.center(280, '#'))
-                # product menu level 1
-                user_level_1_input = int(input('Menu Option:'))
-                if user_level_1_input == 0:
-                    # exit app
-                    break 
-                elif user_level_1_input == 1:
-                    # get all products from product table 
-                    # print products
-                    print('Here are our available products:')
-                    # printing/selecting rows from DB
-                    db.read_db()
-                    # mysql.read_db() 
-                    # txt_io.print_list(products)                 
-                elif user_level_1_input == 2:
-                    # create new product
-                    db.insert_db()
-                    # txt_io.create_product(products)
-                    print('\nHere are your new options:')
-                    # txt_io.print_list(products) 
-                    db.read_db()
-                else:
-                # go to order menu level 2
-                    print(orders_menu.upper())
-                    user_level_2_input = int(input('Menu Option:'))
-                    # orders menu level 2
-                    if user_level_2_input == 0:
-                        # exit app
-                        break
-                    elif user_level_2_input == 1:
-                        #  print orders dictionary 
-                        print('Here are our current orders:')
-                        txt_io.print_list(orders)
-                    elif user_level_2_input == 2:
-                        #  create new order 
-                        order = csv_io.customer_form()
-                        print(f'''
-            Here are your details: Your name is {order['customer_name']}. 
-            Your address is {order['customer_address']}. 
-            Your phone is: {order['customer_phone']}.
-            ''')
-                        print('\nplease see below the available couriers options:')
-                        txt_io.print_list(couriers)
-                        user_input_courier = int(input('''
-Please enter courier number 
-from above list: 
-'''))
-                        order['courier'] = user_input_courier
-                        order['status'] = 'Preparing'
-                        
-                        csv_io.new_order(order)
-                        
-                        txt_io.print_list(orders)
-                    
-                    elif user_level_2_input == 3:
-                        print('here are the current orders:'.capitalize())
-                        # src.file_handlers.csv_io.print_dict(orders)
-                        # TO DO update existing orders status(print + 
-                        # get input + print + get input + update)
-                        csv_io.order_update(orders,'Please enter your order number from the list above:', 'Please type in the number corresponding to the current status of your order:')
-                        
-        if user_input == 2:
-        # go to couriers menu level 1
-            while True:
-                print(couriers_menu.upper())
-                # couriers menu level 1
-                user_level_1_input = int(input('Menu Option:'))
-                if user_level_1_input == 0:
-                    # exit app
-                    break 
-                elif user_level_1_input == 1:
-                    #  print couriers list
-                    print('Here are our available couriers:')
-                    db.read_courier_db()                    # txt_io.print_list(couriers)
-                    
-                elif user_level_1_input == 2:
-                    # create new product
-                    db.insert_courier_db()
-                    # txt_io.create_courier(couriers)
-                    print('\nHere are your new couriers options:')
-                    # txt_io.print_list(couriers) 
-                    db.read_courier_db()    
-    print('Goodbye!')
 
+def exit_app():
+    return False
+
+def new_product_menu():
+    # go to product menu level 1
+    while True:
+        print(product_menu.center(280, '#').upper())
+        # product menu level 1
+        user_level_1_input = int(input('Menu Option:'))
+        if user_level_1_input == 0:
+            # exit app
+            break 
+        elif user_level_1_input == 1:
+            # get all products from product table 
+            # print products
+            print('Here are our available products:')
+            # printing/selecting rows from DB
+            db.read_db()
+            # mysql.read_db() 
+            # txt_io.print_list(products)                 
+        elif user_level_1_input == 2:
+            # create new product
+            db.insert_db()
+            # txt_io.create_product(products)
+            print('\nHere are your new options:')
+            # txt_io.print_list(products) 
+            db.read_db()
+        else:
+        # go to order menu level 2
+            print(orders_menu.upper())
+            user_level_2_input = int(input('Menu Option:'))
+            # orders menu level 2
+            if user_level_2_input == 0:
+                # exit app
+                break
+            elif user_level_2_input == 1:
+                #  print orders dictionary 
+                print('Here are our current orders:')
+                db.read_orders_db()
+                # txt_io.print_list(orders)
+            elif user_level_2_input == 2:
+                #  create new order 
+                db.insert_order_db()
+            elif user_level_2_input == 3:
+                print('here are the current orders:'.capitalize())
+                print()
+                # src.file_handlers.csv_io.print_dict(orders)
+                # TO DO update existing orders status(print + 
+                # get input + print + get input + update)
+                # csv_io.order_update(orders,'Please enter your order number from the list above:', 'Please type in the number corresponding to the current status of your order:')
+                db.update_order()
+    return True        
+
+def print_couriers_list():
+    #  print couriers list
+    print('Here are our available couriers:')
+    db.read_courier_db() 
+    return True
+
+def create_new_product():
+    # create new product
+    db.insert_courier_db()
+    print('\nHere are your new couriers options:')
+    db.read_courier_db()
+    return True
+
+def new_couriers_menu():
+    couriers_menu_list = [exit_app, print_couriers_list, create_new_product ]
+    flag = True
+    while flag:
+        print(couriers_menu.upper())
+        try:
+            user_level_1_input = int(input('Menu Option:'))
+            flag = couriers_menu_list[user_level_1_input]
+        except:
+            print("Oops! No such option. Available options are 0, 1 or 2.")
+    return True  
+
+
+
+
+def user_input(functionlist, menustr):
+    flag = True
+    while flag:
+        # PRINT main menu options // GET user input for main menu option 
+        print(menustr.center(200, '#').upper())
+        try:
+            user_input = int(input('Option:'))
+            flag = functionlist[user_input]()
+        except:
+            print("Oops! No such option. Available options are 0, 1 or 2.")
+    
+def main():
+    user_choice_list = [exit_app, new_product_menu, new_couriers_menu]
+    print(user_choice_list)
+    user_input(user_choice_list, welcome_screen)   
+    print(user_input) 
+    print('Goodbye!')
 
 # Import datas of products/couriers/orders/orders 
 # status from csv files to corresponding dictionaries

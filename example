@@ -1,0 +1,467 @@
+# /*create table orders(
+#   id int auto_increment, 
+#   primary key (id), 
+#   order_name varchar(100)
+# );*/
+
+# /*create table products(
+#   id int auto_increment, 
+#   primary key (id), 
+#   product_name varchar(100)
+# );*/
+
+# #insert into products (product_name) values ('tea'), ('coffee'), ('ice cream'), ('sandwich')
+
+# #insert into orders (order_name) values ('dinner for max')
+
+# /*create table products_on_orders(
+#   id int auto_increment, 
+#   primary key (id), 
+#   order_id int,
+#   product_id int,
+#   foreign key (order_id) references orders(id),
+#   foreign key (product_id) references products(id)
+# );*/
+
+# #select * from orders;
+
+# #select * from products;
+
+# /*insert into products_on_orders (order_id, product_id)
+# values
+# (1, 1),
+# (1, 2),
+# (1, 2),
+# (1, 3);*/
+
+# #select * from products_on_orders;
+
+# /*select orders.order_name, products.product_name
+# from orders
+# join products_on_orders on orders.id = products_on_orders.order_id
+# join products on products_on_orders.product_id = products.id;*/
+
+# #insert into products (product_name) values ('oranges'), ('juice'), ('toasty'), ('peanuts');
+
+# #insert into orders (order_name) values ('office lunch'), ('party plate');
+
+# /*insert into products_on_orders (order_id, product_id)
+# values
+# (2, 7),
+# (2, 7),
+# (2, 7),
+# (2, 7),
+# (3, 1),
+# (3, 4),
+# (3, 5),
+# (3, 6),
+# (2, 7),
+# (3, 8),
+# (3, 8)
+# ;*/
+
+# select orders.order_name, products.product_name
+# from orders
+# join products_on_orders on orders.id = products_on_orders.order_id
+# join products on products_on_orders.product_id = products.id
+# where orders.id = 3;
+
+
+# import pymysql
+# import os
+# from dotenv import load_dotenv
+# # runs at import time
+# load_dotenv()
+
+# # run at run time when function is called
+# def db_connect():
+#     host = os.environ.get("mysql_host")
+#     user = os.environ.get("mysql_user")
+#     password = os.environ.get("mysql_pass")
+#     database = os.environ.get("mysql_db")
+
+
+#     # Establish a database connection
+#     connection = pymysql.connect(
+#         host=host,
+#         user=user,
+#         password=password,
+#         database=database
+#     )
+
+#     return connection
+
+# connection = db_connect()
+
+# # cursor = connection.cursor()
+# # cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+# # Execute SQL query
+
+
+# # Gets all rows from the result
+# def read_db():
+#     # create the cursor
+#     cursor = connection.cursor(pymysql.cursors.DictCursor)
+#     # execute the command / run the query
+#     cursor.execute('SELECT product_id, product_name, price FROM products')
+#     # get the data back into the app
+#     rows = cursor.fetchall()
+#     for row in rows:
+#         print(f'id: {str(row["product_id"])}, name: {str(row["product_name"])}, price: {row["price"]}')
+        
+#     cursor.close()
+    
+# # Managing the cursor. opening with a mode 
+# # and then close it
+    
+# def insert_db():
+    
+#     new_product = input("What would you like?:")
+#     new_price = input("What is this product price?: ")
+#     # managing the cursor
+#     cursor = connection.cursor()
+#     sql = """ INSERT INTO products (product_name, price )
+#     VALUES (%s, %s)"""
+#     val = (new_product, new_price )
+#     # add many to execute many rows
+#     cursor.execute(sql, val)
+#     connection.commit()
+#     cursor.close()
+
+
+# # Gets all rows from the result
+# def read_courier_db():
+#     # create the cursor
+#     cursor = connection.cursor(pymysql.cursors.DictCursor)
+#     # execute the command / run the query
+#     cursor.execute('SELECT courier_id, courier_name, courier_phone FROM couriers')
+#     # get the data back into the app
+#     rows = cursor.fetchall()
+#     for row in rows:
+#         print(f'id: {str(row["courier_id"])}, name: {str(row["courier_name"])}, phone: {row["courier_phone"]}')
+        
+#     cursor.close()
+    
+# # Managing the cursor. opening with a mode 
+# # and then close it
+    
+# def insert_courier_db():
+#     new_courier = input("What courier would you like to add?: ")
+#     new_phone = input("What is their phone number?: ")
+
+#     # managing the cursor
+#     cursor = connection.cursor()
+#     sql = """ INSERT INTO couriers (courier_name, courier_phone)
+#     VALUES (%s, %s)"""
+#     val = (new_courier, new_phone)
+#     # add many to execute many rows
+#     cursor.execute(sql, val)
+#     connection.commit()
+#     cursor.close()
+
+# # def create_table():
+# #     cursor = connection.cursor()
+# #     sql = """ CREATE TABLE orders (
+# #         order_id int not null auto_increment, 
+# #         customer_name varchar(255) not null,
+# #         customer_address varchar(255) not null,
+# #         customer_phone varchar(255) not null, 
+# #         courier varchar(255) not null,
+# #         status int not null,
+# #         primary key(order_id)
+# #     );
+# #     """
+# #     cursor.execute(sql)
+# #     connection.commit()
+# #     cursor.close()
+
+# def read_orders_db():
+#     # create the cursor
+#     cursor = connection.cursor(pymysql.cursors.DictCursor)
+#     # execute the command / run the query
+#     cursor.execute('SELECT order_id, customer_name, customer_address, customer_phone, courier, status FROM orders')
+#     # get the data back into the app
+#     rows = cursor.fetchall()
+#     for row in rows:
+#         print(f'id: {str(row["order_id"])}, name: {str(row["customer_name"])},address: {str(row["customer_address"])}, courier: {row["courier"]}, status: {str(row["status"])}')
+        
+#     cursor.close()
+    
+# def insert_order_db():
+#     customer_name = input('What is your name?:')
+#     customer_address = input('Please enter your address:')
+#     customer_phone = int(input('Please enter your phone number:'))
+#     read_db()
+#     chosen_products = input('Please enter the product ID\'s separated by commas:')
+#     product_list = []
+#     for product in chosen_products.split(','):
+#         product_list.append(int(product))
+        
+#     read_courier_db()
+#     courier = int(input('Please select courier ID:'))
+#     status = 1
+#     # managing the cursor
+#     cursor = connection.cursor()
+#     sql = """ INSERT INTO orders (customer_name, customer_address, customer_phone, courier, status )
+#     VALUES (%s, %s, %s, %s, %s); 
+#     SELECT last_insert_id()"""
+#     #command above is to respond to my app
+#     val = (customer_name, customer_address, customer_phone, courier, status)
+#     # add many to execute many rows
+#     print(f'''
+#             Here are your details: Your name is {customer_name}. 
+#             Your address is {customer_address}. 
+#             Your phone is: {customer_phone}.
+#             ''')
+#     cursor.execute(sql, val)
+#     rows = cursor.fetchall()
+#     order_id = rows[0][0]
+#     sql = """ insert into join_products_orders (order_id, product_id) 
+#     VALUES (%s, %s)"""
+#     for product in product_list:
+#         val = (order_id, product)
+#         cursor.execute(sql, val)        
+#     connection.commit()
+#     cursor.close()
+
+# def read_order_status_db():
+#     # create the cursor
+#     cursor = connection.cursor(pymysql.cursors.DictCursor)
+#     # execute the command / run the query
+#     cursor.execute('SELECT id, description FROM order_status')
+#     # get the data back into the app
+#     rows = cursor.fetchall()
+#     for row in rows:
+#         print(f'id: {str(row["id"])}, status: {str(row["description"])}')
+        
+#     cursor.close()
+
+# def update_order():
+#     read_orders_db()
+#     chosen_order = int(input('Please enter the order id:'))
+#     read_order_status_db()
+#     chosen_status = int(input('Please enter status id:'))
+#     cursor = connection.cursor(pymysql.cursors.DictCursor)
+    
+#     sql = 'UPDATE orders SET status = %s WHERE order_id = %s'
+#     val = (chosen_status, chosen_order)
+    
+#     cursor.execute(sql, val)
+#     connection.commit()
+#     cursor.close()
+    
+    
+# def update_courier_db():
+#     user_input_courier = int(input('''
+#     Please enter courier number 
+#     from above list: 
+#     '''))
+#     # managing the cursor
+#     cursor = connection.cursor()
+#     sql = """ UPDATE orders SET courier = user_input_courier 
+#     'WHERE""" 
+    
+#     cursor.execute(sql)
+#     connection.commit()
+#     cursor.close()
+
+
+# import csv
+# from pprint import pp
+
+# import src.file_handlers.txt_io as txt_io , src.file_handlers.csv_io as csv_io
+# import src.db.db as db
+# # import mysql
+
+# # Global variables #########################################################
+# welcome_screen = """
+#                                 /--------------------------\   
+#                                 |   WELCOME TO OUR CAFE!   |
+#                                 |__________________________|
+                                   
+# please select an option below:
+# 0. exit app
+# 1. go to the product menu
+# 2. go to the couriers menu
+# """
+
+# product_menu = """
+#                                 /--------------------------\   
+#                                 |       PRODUCTS MENU      |
+#                                 |__________________________|
+# Please select an option from our product menu below:
+# 0. Return To Main Menu
+# 1. View Available Products
+# 2. Add Your Own Product Choice
+# 3. Go to The Orders Menu
+# """
+# couriers_menu = """
+#                                 /--------------------------\   
+#                                 |       COURIERS MENU      |
+#                                 |__________________________|
+# Please select an option from our couriers menu below:
+# 0. Return To Main Menu
+# 1. View Available Couriers
+# 2. Add Your Own Couriers
+# """
+
+# orders_menu = """
+#                                 /--------------------------\   
+#                                 |       ORDERS MENU        |
+#                                 |__________________________|
+# Please select an option from our orders menu below:
+# 0. Return To Main Menu
+# 1. View Current Orders
+# 2. Create A New Order
+# 3. Update An Order
+# """
+
+# couriers = txt_io.read_data_txt_file('data/couriers.txt')
+# products = txt_io.read_data_txt_file('data/products.txt')
+# orders = csv_io.read_data_csv_file('data/orders.csv')
+
+# # connection = db.db_connect
+
+# ############################################## FUNCTIONS ####################################################################### 
+# # PRODUCT MENU
+#     # print enumerated list function                      
+#     # create pdt function
+#     # def read_data_txt_file(file_name):
+#     # def save_data_txt_file(data, file_name):
+#     # def print_list(lst):
+#     # def create_product(products):
+
+# # COURIER MENU
+#     # create courier
+#     # def create_courier(couriers):
+
+# # ORDER MENU
+#     # read_data_csv_file
+#     # customer_form
+# # save_data_txt_file(test, 'data/test.txt')
+
+# ###############################################################################################################################
+
+# def main():            
+#     while True:
+#         # PRINT main menu options // GET user input for main menu option 
+#         print(welcome_screen.center(200, '#').upper())
+#         user_input = int(input('Option:'))
+#         if user_input == 0:
+#             break
+#         if user_input == 1:
+#         # go to product menu level 1
+#             while True:
+#                 print(product_menu.center(280, '#'))
+#                 # product menu level 1
+#                 user_level_1_input = int(input('Menu Option:'))
+#                 if user_level_1_input == 0:
+#                     # exit app
+#                     break 
+#                 elif user_level_1_input == 1:
+#                     # get all products from product table 
+#                     # print products
+#                     print('Here are our available products:')
+#                     # printing/selecting rows from DB
+#                     db.read_db()
+#                     # mysql.read_db() 
+#                     # txt_io.print_list(products)                 
+#                 elif user_level_1_input == 2:
+#                     # create new product
+#                     db.insert_db()
+#                     # txt_io.create_product(products)
+#                     print('\nHere are your new options:')
+#                     # txt_io.print_list(products) 
+#                     db.read_db()
+#                 else:
+#                 # go to order menu level 2
+#                     print(orders_menu.upper())
+#                     user_level_2_input = int(input('Menu Option:'))
+#                     # orders menu level 2
+#                     if user_level_2_input == 0:
+#                         # exit app
+#                         break
+#                     elif user_level_2_input == 1:
+#                         #  print orders dictionary 
+#                         print('Here are our current orders:')
+#                         db.read_orders_db()
+#                         # txt_io.print_list(orders)
+#                     elif user_level_2_input == 2:
+#                         #  create new order 
+                        
+                        
+                        
+#                         db.insert_order_db()
+#                         # order = csv_io.customer_form()
+                        
+#                         # print('\nplease see below the available couriers options:')
+#                         # db.read_courier_db()
+# #                         # txt_io.print_list(couriers)
+# #                         user_input_courier = int(input('''
+# # Please enter courier number 
+# # from above list: 
+# # '''))
+# #                         order['courier'] = user_input_courier
+# #                         order['status'] = 'Preparing'
+                        
+# #                         csv_io.new_order(order)
+                        
+# #                         txt_io.print_list(orders)
+                    
+#                     elif user_level_2_input == 3:
+#                         print('here are the current orders:'.capitalize())
+#                         # src.file_handlers.csv_io.print_dict(orders)
+#                         # TO DO update existing orders status(print + 
+#                         # get input + print + get input + update)
+#                         # csv_io.order_update(orders,'Please enter your order number from the list above:', 'Please type in the number corresponding to the current status of your order:')
+#                         db.update_order()
+#         if user_input == 2:
+#         # go to couriers menu level 1
+#             while True:
+#                 print(couriers_menu.upper())
+#                 # couriers menu level 1
+#                 user_level_1_input = int(input('Menu Option:'))
+#                 if user_level_1_input == 0:
+#                     # exit app
+#                     break 
+#                 elif user_level_1_input == 1:
+#                     #  print couriers list
+#                     print('Here are our available couriers:')
+#                     db.read_courier_db()                    # txt_io.print_list(couriers)
+                    
+#                 elif user_level_1_input == 2:
+#                     # create new product
+#                     db.insert_courier_db()
+#                     # txt_io.create_courier(couriers)
+#                     print('\nHere are your new couriers options:')
+#                     # txt_io.print_list(couriers) 
+#                     db.read_courier_db()    
+#     print('Goodbye!')
+
+
+# # Import datas of products/couriers/orders/orders 
+# # status from csv files to corresponding dictionaries
+
+# # Keep track of categories of products and 
+# # stocks by running recursive loops
+
+# # Keep record of customers details 
+
+# # Keep track of available couriers
+
+# # Input new orders into system 
+
+# # Keep track of order status with 
+# # conditional statement whether 
+# # preparing/out-for-delivery/delivered
+
+# # Export datas to csv files products/couriers/orders/orders status
+
+# # Test app
+
+# # Automatically send updates to app
+
+
+# if __name__ == '__main__':
+#     main()
